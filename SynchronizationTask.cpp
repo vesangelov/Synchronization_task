@@ -2,6 +2,7 @@
 
 #include "Storage.h"
 
+constexpr int BUFFERSIZE = 3;
 constexpr int MAXDATASIZE = 10;
 
 void addDataToCurrentClass(std::shared_ptr<Storage>& storage) {
@@ -33,8 +34,8 @@ void addDataToCurrentClass(std::shared_ptr<Storage>& storage) {
 
 int main()
 {
-    std::shared_ptr<Storage> storageOne = std::make_shared<Storage>();
-    std::shared_ptr<Storage> storageTwo = std::make_shared<Storage>();
+    std::shared_ptr<Storage> storageOne = std::make_shared<Storage>(BUFFERSIZE);
+    std::shared_ptr<Storage> storageTwo = std::make_shared<Storage>(BUFFERSIZE);
 
     int currentClass = 3;
 

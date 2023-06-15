@@ -10,30 +10,26 @@
 #include <chrono>
 #include <cassert>
 
-constexpr int BUFFERSIZE = 3;
+#include "Buffer.h"
 
 class Storage {
 public:
-    explicit Storage();
+    explicit Storage(size_t size);
     void addData(std::string& newData);
     void printData();
-    void syncData(const std::string& newData);
     void setMirrorObject(const std::shared_ptr<Storage>& storage);
     ~Storage();
 
 private:
+    void synchronization();
     void syncMirror();
+    std::vector<std::string> copyTempBuffer();
     //Check if I have mirror object
-
-    void appendData(std::string& newData);
-    std::vector<std::string> buffer;
-    size_t begin;
-    size_t size;
+    Buffer tempBuffer;
+    Buffer buffer;
     std::mutex mutex;
-    bool canSync;
-    std::shared_ptr<Storage> storagePtr;
+    std::shared_ptr<Storage> mirrorObjPtr;
     std::unique_ptr<std::thread> syncThread;
-    std::vector<std::string> tempBuffer;
 };
 
 
@@ -42,4 +38,4 @@ private:
 /*syncMirror()
 tempBuffer saves the data and sync it with the other class buffer.
 Where I will have a mutex?
-If few users are traying to add data, tempBuffer will add all and afther that will make the synchronization.*/
+If few users are trying to add data, tempBuffer will add all and after that will make the synchronization.*/
