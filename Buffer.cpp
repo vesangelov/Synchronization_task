@@ -3,7 +3,9 @@
 Buffer::Buffer(size_t bufferSize)
         : data(bufferSize), begin(0), size(0) {}
 
-void Buffer::addData(const std::string& newData){
+void Buffer::addData(const std::string& newData)
+{
+    /*Function for adding data in the buffer.*/
 
     if (size == data.size())
     {
@@ -25,7 +27,9 @@ void Buffer::addData(const std::string& newData){
     }
 }
 
-std::vector<std::string> Buffer::getBuffer() const{
+std::vector<std::string> Buffer::getBuffer() const
+{
+    /*Function that return the buffer with the data.*/
     std::vector<std::string> result(size);
 
     if (begin == 0)
@@ -44,14 +48,16 @@ std::vector<std::string> Buffer::getBuffer() const{
 
         for (size_t i = 0; i < begin; i++)
         {
-            result[i + size] = data[i];
+            result[i + (size - begin)] = data[i];
         }
     }
 
     return result;
 }
 
-std::vector<std::string> Buffer::consumeBuffer(){
+std::vector<std::string> Buffer::consumeBuffer()
+{
+    /*Function that return the full buffer with the data and zeroes it with parameters for begin and size.*/
     std::vector<std::string> result = getBuffer();
     begin = 0;
     size = 0;
