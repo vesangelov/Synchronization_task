@@ -40,19 +40,20 @@ void Storage::setMirrorObject(const std::shared_ptr<Storage>& storage)
     /*Function for synchronization the two objects.*/
     std::unique_lock<std::mutex> lock(mutex);
     mirrorObjPtr = storage;
+
+    syncMirror();
 }
 
 void Storage::syncMirror() 
 {
     /*Function for synchronization the temporary buffer with permanent buffer.*/
-    auto tempData = copyTempBuffer();
 
-    for(const auto& item : tempData){
+    for(const auto& item : mirrorObjPtr->tempBuffer.getBuffer()){
         buffer.addData(item);
     }
 
     if(mirrorObjPtr != nullptr){
-        for(const auto& item : tempData){
+        for(const auto& item : mirrorObjPtr->tempBuffer.getBuffer()){
             mirrorObjPtr->buffer.addData(item);
         }
     }
@@ -65,7 +66,7 @@ void Storage::synchronization()
     while(true){
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
-        syncMirror();
+        //syncMirror();
     }
 }
 
