@@ -48,12 +48,15 @@ void Storage::syncMirror()
     /*Function for receiving synchronization on sync thread and copy the data in the other object.*/
     auto tempData = copyTempBuffer();
 
-    std::unique_lock<std::mutex> lock(bufferMutex);
-    for(const auto& item : tempData){
-        buffer.addData(item);
+    {
+        std::unique_lock<std::mutex> lock(bufferMutex);
+        for(const auto& item : tempData){
+            buffer.addData(item);
+        }
     }
 
     if(mirrorObjPtr != nullptr){
+        std::unique_lock<std::mutex> lock(mirrorObjPtr->bufferMutex);
         for(const auto& item : tempData){
             mirrorObjPtr->buffer.addData(item);
         }
