@@ -37,6 +37,9 @@ int main()
     std::shared_ptr<Storage> storageOne = std::make_shared<Storage>(BUFFERSIZE);
     std::shared_ptr<Storage> storageTwo = std::make_shared<Storage>(BUFFERSIZE);
 
+    storageTwo->setMirrorObject(storageOne);
+    storageOne->setMirrorObject(storageTwo);
+
     int currentClass = 3;
 
     while (true)
@@ -48,12 +51,10 @@ int main()
         if (currentClass == 1)
         {
             addDataToCurrentClass(storageOne);
-            storageTwo->setMirrorObject(storageOne);
         }
         else if (currentClass == 2)
         {
             addDataToCurrentClass(storageTwo);
-            storageOne->setMirrorObject(storageTwo);
         }
         else if (currentClass == 0)
         {
@@ -64,7 +65,5 @@ int main()
         {
             std::cout << "Undefined class number." << std::endl;
         }
-
-        
     }
 }

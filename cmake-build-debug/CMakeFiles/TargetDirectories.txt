@@ -1,3 +1,0 @@
-/home/razer/Desktop/Synchronizationtask/Synchronization_task/cmake-build-debug/CMakeFiles/Synchronization_task.dir
-/home/razer/Desktop/Synchronizationtask/Synchronization_task/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/razer/Desktop/Synchronizationtask/Synchronization_task/cmake-build-debug/CMakeFiles/rebuild_cache.dir

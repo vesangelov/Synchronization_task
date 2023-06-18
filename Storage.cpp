@@ -8,7 +8,7 @@ Storage::Storage(size_t size)
 void Storage::addData(std::string& newData)
 {
     /*Function for adding data in the Storage and start the synchronization thread.*/
-    std::unique_lock<std::mutex> lock(mutex);
+    std::unique_lock<std::mutex> lock(tempBufferMutex);
 
     if (syncThread == nullptr) {
         syncThread = std::unique_ptr<std::thread>(new std::thread(&Storage::synchronization, this));
@@ -20,6 +20,7 @@ void Storage::addData(std::string& newData)
 void Storage::printData() 
 {
     /*Function for printing the data in the buffer.*/
+    std::unique_lock<std::mutex> lock(bufferMutex);
     for(const auto& item : buffer.getBuffer()){
         std::cout << item << ", ";
     }
@@ -27,10 +28,10 @@ void Storage::printData()
     std::cout << std::endl;
 }
 
-std::vector<std::string> Storage::copyTempBuffer() 
+std::vector<std::string> Storage::copyTempBuffer()
 {
     /*Function return the temporary boffuer with current data.*/
-    std::unique_lock<std::mutex> lock(mutex);
+    std::unique_lock<std::mutex> lock(tempBufferMutex);
 
     return tempBuffer.consumeBuffer();
 }
@@ -38,22 +39,22 @@ std::vector<std::string> Storage::copyTempBuffer()
 void Storage::setMirrorObject(const std::shared_ptr<Storage>& storage)
 {
     /*Function for synchronization the two objects.*/
-    std::unique_lock<std::mutex> lock(mutex);
+    std::unique_lock<std::mutex> lock(bufferMutex);
     mirrorObjPtr = storage;
-
-    syncMirror();
 }
 
 void Storage::syncMirror() 
 {
-    /*Function for synchronization the temporary buffer with permanent buffer.*/
+    /*Function for receiving synchronization on sync thread and copy the data in the other object.*/
+    auto tempData = copyTempBuffer();
 
-    for(const auto& item : mirrorObjPtr->tempBuffer.getBuffer()){
+    std::unique_lock<std::mutex> lock(bufferMutex);
+    for(const auto& item : tempData){
         buffer.addData(item);
     }
 
     if(mirrorObjPtr != nullptr){
-        for(const auto& item : mirrorObjPtr->tempBuffer.getBuffer()){
+        for(const auto& item : tempData){
             mirrorObjPtr->buffer.addData(item);
         }
     }
@@ -61,12 +62,12 @@ void Storage::syncMirror()
 
 void Storage::synchronization()
 {
-    /*Function where the synchronization is set.*/
+    /*Function synchronization thread body.*/
 
     while(true){
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
-        //syncMirror();
+        syncMirror();
     }
 }
 

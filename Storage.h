@@ -27,7 +27,8 @@ private:
     //Check if I have mirror object
     Buffer tempBuffer;
     Buffer buffer;
-    std::mutex mutex;
+    std::mutex tempBufferMutex;
+    std::mutex bufferMutex;
     std::shared_ptr<Storage> mirrorObjPtr;
     std::unique_ptr<std::thread> syncThread;
 };

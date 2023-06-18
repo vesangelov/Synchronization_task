@@ -1,9 +1,0 @@
-# ninja log v5
-0	2449	1686854373843437681	CMakeFiles/Synchronization_task.dir/Storage.cpp.o	54d4a5a9abab45dd
-1	109	1686854761630564960	build.ninja	5569dadd9e207529
-2451	4054	1686854375447436374	CMakeFiles/Synchronization_task.dir/SynchronizationTask.cpp.o	72f3807ad8f9a512
-4055	4373	1686854375767436132	Synchronization_task	f6c107b5ae1ceea9
-2	1581	1686858272451561609	CMakeFiles/Synchronization_task.dir/SynchronizationTask.cpp.o	72f3807ad8f9a512
-2	1994	1686858330468437567	CMakeFiles/Synchronization_task.dir/Storage.cpp.o	54d4a5a9abab45dd
-1995	2619	1686858331092446979	CMakeFiles/Synchronization_task.dir/Buffer.cpp.o	b8182b4b0848e10d
-2619	2931	1686858331404451685	Synchronization_task	733db9adc4cfde04
